@@ -25,6 +25,7 @@ jobs:
           gradle-version: current
 
       - name: Build
+        working-directory: DeathClientDLC
         run: gradle build --no-daemon
 
       - name: Upload mod jar
@@ -32,6 +33,6 @@ jobs:
         with:
           name: DeathClientDLC
           path: |
-            build/libs/*.jar
-            !build/libs/*-sources.jar
-            !build/libs/*-dev.jar
+            DeathClientDLC/build/libs/*.jar
+            !DeathClientDLC/build/libs/*-sources.jar
+            !DeathClientDLC/build/libs/*-dev.jar
