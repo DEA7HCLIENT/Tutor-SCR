@@ -12,27 +12,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 21
-
-      # No gradlew in the repo, so install Gradle through the action.
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: current
-
-      - name: Build
-        working-directory: DeathClientDLC
-        run: gradle build --no-daemon
-
-      - name: Upload mod jar
-        uses: actions/upload-artifact@v4
-        with:
-          name: DeathClientDLC
-          path: |
-            DeathClientDLC/build/libs/*.jar
-            !DeathClientDLC/build/libs/*-sources.jar
-            !DeathClientDLC/build/libs/*-dev.jar
+      - name: Find project directory
+        id: proj
+        run: |
+          echo "Repo structure:"
+          find . -maxdepth 3 -not -path './.git/*' | sort
+          FILE=$(find . -maxdepth 3 -name settings.gradle -not -path './.git/*' | head -n 1)
+          if [ -z "$FILE" ]; then
+            echo "::error::settings.gradle not found in the repo"
+            exit 1
+          fi
+          DIR=$(di
